@@ -95,6 +95,7 @@ static struct config_entry config_entries[] = {
 	{ .name = CONF_DECODER, true, true },
 	{ .name = CONF_INPUT, true, true },
 	{ .name = CONF_GAPLESS_MP3_PLAYBACK, false, false },
+	{ .name = CONF_FILE_URL_UID_CHECK, false, false },	
 	{ .name = CONF_PLAYLIST_PLUGIN, true, true },
 	{ .name = CONF_AUTO_UPDATE, false, false },
 	{ .name = CONF_AUTO_UPDATE_DEPTH, false, false },

@@ -69,6 +69,7 @@
 #define CONF_DECODER                    "decoder"
 #define CONF_INPUT                      "input"
 #define CONF_GAPLESS_MP3_PLAYBACK       "gapless_mp3_playback"
+#define CONF_FILE_URL_UID_CHECK         "file_url_uid_check"
 #define CONF_PLAYLIST_PLUGIN            "playlist_plugin"
 #define CONF_AUTO_UPDATE                "auto_update"
 #define CONF_AUTO_UPDATE_DEPTH          "auto_update_depth"
@@ -78,6 +79,7 @@
 
 #define DEFAULT_PLAYLIST_MAX_LENGTH (1024*16)
 #define DEFAULT_PLAYLIST_SAVE_ABSOLUTE_PATHS false
+#define DEFAULT_CONF_FILE_URL_UID_CHECK true
 
 #define MAX_FILTER_CHAIN_LENGTH 255
 

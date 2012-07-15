@@ -19,6 +19,7 @@
 
 #include "client_file.h"
 #include "client.h"
+#include "conf.h"
 #include "ack.h"
 
 #include <sys/stat.h>
@@ -38,13 +39,15 @@ client_allow_file(const struct client *client, const char *path_fs,
 		    "Access denied");
 	return false;
 #else
+	bool check_perms = config_get_bool(CONF_FILE_URL_UID_CHECK,
+					   DEFAULT_CONF_FILE_URL_UID_CHECK);
 	const int uid = client_get_uid(client);
 	if (uid >= 0 && (uid_t)uid == geteuid())
 		/* always allow access if user runs his own MPD
 		   instance */
 		return true;
 
-	if (uid <= 0) {
+	if (check_perms && uid <= 0) {
 		/* unauthenticated client */
 		g_set_error(error_r, ack_quark(), ACK_ERROR_PERMISSION,
 			    "Access denied");
@@ -58,7 +61,7 @@ client_allow_file(const struct client *client, const char *path_fs,
 		return false;
 	}
 
-	if (st.st_uid != (uid_t)uid && (st.st_mode & 0444) != 0444) {
+	if (check_perms && st.st_uid != (uid_t)uid && (st.st_mode & 0444) != 0444) {
 		/* client is not owner */
 		g_set_error(error_r, ack_quark(), ACK_ERROR_PERMISSION,
 			    "Access denied");
