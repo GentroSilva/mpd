@@ -20,6 +20,7 @@
 #include "config.h"
 #include "ClientFile.hxx"
 #include "Client.hxx"
+#include "ConfigGlobal.hxx"
 #include "protocol/Ack.hxx"
 #include "fs/Path.hxx"
 #include "fs/FileSystem.hxx"
@@ -31,6 +32,8 @@
 #include <errno.h>
 #include <unistd.h>
 
+#define DEFAULT_CONF_FILE_URL_UID_CHECK true
+
 bool
 client_allow_file(const Client &client, Path path_fs, Error &error)
 {
@@ -41,13 +44,15 @@ client_allow_file(const Client &client, Path path_fs, Error &error)
 	error.Set(ack_domain, ACK_ERROR_PERMISSION, "Access denied");
 	return false;
 #else
+	bool check_perms = config_get_bool(CONF_FILE_URL_UID_CHECK,
+					   DEFAULT_CONF_FILE_URL_UID_CHECK);
 	const int uid = client.GetUID();
 	if (uid >= 0 && (uid_t)uid == geteuid())
 		/* always allow access if user runs his own MPD
 		   instance */
 		return true;
 
-	if (uid < 0) {
+	if (check_perms && uid < 0) {
 		/* unauthenticated client */
 		error.Set(ack_domain, ACK_ERROR_PERMISSION, "Access denied");
 		return false;
@@ -59,7 +64,7 @@ client_allow_file(const Client &client, Path path_fs, Error &error)
 		return false;
 	}
 
-	if (st.st_uid != (uid_t)uid && (st.st_mode & 0444) != 0444) {
+	if (check_perms && st.st_uid != (uid_t)uid && (st.st_mode & 0444) != 0444) {
 		/* client is not owner */
 		error.Set(ack_domain, ACK_ERROR_PERMISSION, "Access denied");
 		return false;
