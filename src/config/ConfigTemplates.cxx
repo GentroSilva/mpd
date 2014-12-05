@@ -70,6 +70,7 @@ const ConfigTemplate config_templates[] = {
 	{ "decoder", true, true },
 	{ "input", true, true },
 	{ "gapless_mp3_playback", false, false },
+	{ "file_url_uid_check", false, false },
 	{ "playlist_plugin", true, true },
 	{ "auto_update", false, false },
 	{ "auto_update_depth", false, false },
