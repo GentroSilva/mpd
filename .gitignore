@@ -83,3 +83,4 @@ tags
 /*.tar.bz2
 /*.tar.xz
 /mpd-*/
+/nbproject/
