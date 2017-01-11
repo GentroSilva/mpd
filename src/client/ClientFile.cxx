@@ -19,12 +19,15 @@
 
 #include "config.h"
 #include "Client.hxx"
+#include "config/ConfigGlobal.hxx"
 #include "protocol/Ack.hxx"
 #include "fs/Path.hxx"
 #include "fs/FileInfo.hxx"
 
 #include <unistd.h>
 
+#define DEFAULT_CONF_FILE_URL_UID_CHECK true
+        
 void
 Client::AllowFile(Path path_fs) const
 {
@@ -33,18 +36,20 @@ Client::AllowFile(Path path_fs) const
 
 	throw ProtocolError(ACK_ERROR_PERMISSION, "Access denied");
 #else
+	bool check_perms = config_get_bool(CONF_FILE_URL_UID_CHECK,
+					   DEFAULT_CONF_FILE_URL_UID_CHECK);
 	if (uid >= 0 && (uid_t)uid == geteuid())
 		/* always allow access if user runs his own MPD
 		   instance */
 		return;
 
-	if (uid < 0)
+	if (check_perms && uid < 0)
 		/* unauthenticated client */
 		throw ProtocolError(ACK_ERROR_PERMISSION, "Access denied");
 
 	const FileInfo fi(path_fs);
 
-	if (fi.GetUid() != (uid_t)uid && (fi.GetMode() & 0444) != 0444)
+	if (check_perms && fi.GetUid() != (uid_t)uid && (fi.GetMode() & 0444) != 0444)
 		/* client is not owner */
 		throw ProtocolError(ACK_ERROR_PERMISSION, "Access denied");
 #endif

@@ -22,6 +22,7 @@
 
 #include "Compiler.h"
 
+<<<<<<< HEAD
 #if defined(WIN32) && CLANG_OR_GCC_VERSION(4,7)
 /* "INPUT" is declared by winuser.h */
 #pragma GCC diagnostic push
@@ -73,6 +74,7 @@ enum class ConfigOption {
 	METADATA_TO_USE,
 	SAVE_ABSOLUTE_PATHS,
 	GAPLESS_MP3_PLAYBACK,
+        CONF_FILE_URL_UID_CHECK,
 	AUTO_UPDATE,
 	AUTO_UPDATE_DEPTH,
 	DESPOTIFY_USER,

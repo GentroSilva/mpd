@@ -68,6 +68,7 @@ const ConfigTemplate config_param_templates[] = {
 	{ "metadata_to_use" },
 	{ "save_absolute_paths_in_playlists" },
 	{ "gapless_mp3_playback" },
+        { "file_url_uid_check" },
 	{ "auto_update" },
 	{ "auto_update_depth" },
 	{ "despotify_user", false, true },

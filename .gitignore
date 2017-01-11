@@ -86,3 +86,4 @@ tags
 /mpd-*/
 
 __pycache__/
+/nbproject/
